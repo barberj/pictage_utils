@@ -9,32 +9,52 @@ BASEPATH=~/Dropbox/Pictage/sql
 get_qualified_path()
 {
     QP=$1
-    if [ ! -f $QP ]; then
-        if [ -f $QP.sql ]; then
-            QP=$QP.sql
-            if [ "$DEBUG" ]; then echo 'Passed qualifed file name without extension'; fi
-        fi
+    FILE_EXISTS=
 
-        if [ -f $BASEPATH/$QP ]; then
-            QP=$BASEPATH/$QP
-            if [ "$DEBUG" ]; then echo 'Passed the file name, but not qualified'; fi
-        fi
-
-        if [ -f $BASEPATH/$QP.sql ]; then
-            QP=$BASEPATH/$QP.sql
-            if [ "$DEBUG" ]; then echo 'Passed unqualified file name without extension'; fi
-        fi
-    else
-        if [ "$DEBUG" ]; then echo "Passed the fully qualified path $QP"; fi
+    if [ -f $QP ]; then
+        FILE_EXISTS=True
+        if [ "$DEBUG" ]; then echo "Passed the fully qualified path"; fi
     fi
-    echo $QP
+
+    if [ -f $QP.sql ]; then
+        QP=$QP.sql
+        FILE_EXISTS=True
+        if [ "$DEBUG" ]; then echo 'Passed qualifed file name without extension'; fi
+    fi
+
+    if [ -f $BASEPATH/$QP ]; then
+        QP=$BASEPATH/$QP
+        FILE_EXISTS=True
+        if [ "$DEBUG" ]; then echo 'Passed the file name, but not qualified'; fi
+    fi
+
+    if [ -f $BASEPATH/$QP.sql ]; then
+        QP=$BASEPATH/$QP.sql
+        FILE_EXISTS=True
+        if [ "$DEBUG" ]; then echo 'Passed unqualified file name without extension'; fi
+    fi
+
+    if [ "$DEBUG" ] && [ "$FILE_EXISTS" ]; then echo $QP; fi
+    if [ ! "$FILE_EXISTS" ]; then echo "Unable to find $QP"; fi
 }
 
-if [ "$DEBUG" ]; then
-    get_qualified_path atrium
-    get_qualified_path ~/Dropbox/Pictage/jobs/atrium
-    get_qualified_path ~/Dropbox/Pictage/jobs/atrium.sql
-fi
+test_file(){
+    if [ "$DEBUG" ]; then
+        echo 'Starting Test'
+        echo
+        get_qualified_path atrium
+        echo
+        get_qualified_path ~/Dropbox/Pictage/sql/atrium
+        echo
+        get_qualified_path ~/Dropbox/Pictage/sql/atrium.sql
+        echo
+        get_qualified_path ~/Dropbox/Pictage/job/atrium.sql
+        echo
+        echo 'Test complete'
+    else
+        echo 'DEBUG is not set'
+    fi
+}
 
 test_activate()
 {
