@@ -58,7 +58,7 @@ refresh_mysql()
     # check if fully qualified path
     # update if just a date was passed
     # update if relative file name was passed 
-    mysql < $SQLFILE
+    mysql $DATABASE < $SQLFILE
 }
 
 refresh_all()
