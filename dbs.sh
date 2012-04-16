@@ -61,7 +61,7 @@ test_activate()
     echo 'TEst'
 }
 
-refresh_pqsl()
+refresh_psql()
 {
     DATABASE=$1
     SQLFILE=${2-$BASEPATH/$DATABASE.sql}
@@ -83,8 +83,8 @@ refresh_mysql()
 
 refresh_all()
 {
-    refresh_pqsl atrium
-    refresh_pqsl nimbus
+    refresh_psql atrium
+    refresh_psql nimbus
     refresh_mysql shootq
 }
 
@@ -94,7 +94,7 @@ archive_sql()
     cp $BASEPATH/$DATABASE.sql $BASEPATH/`date "+%Y%m%d"`$DATABASE.sql
 }
 
-dump_pqsl()
+dump_psql()
 {
     DATABASE=$1
     pg_dump $DATABASE -cf $BASEPATH/$DATABASE.sql
@@ -112,7 +112,7 @@ dump_mysql()
 
 dump_all()
 {
-    dump_pqsl atrium
-    dump_pqsl nimbus
+    dump_psql atrium
+    dump_psql nimbus
     dump_mysql shootq
 }
